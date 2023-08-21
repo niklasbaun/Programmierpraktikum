@@ -165,12 +165,16 @@ public class StreamingJava {
      * @return the stream of bytes
      */
     Stream<Byte> serialize(Stream<NaturalGasBilling> stream){
-        return stream.flatMap(NaturalGasBilling::toBytes);
+        return null;
     }
 
+    /**
+     * method to deserialize a stream of bytes
+     * @param stream the stream of bytes
+     * @return the stream of NaturalGasBilling
+     */
     public Stream<NaturalGasBilling> deserialize(Stream<Byte> stream){
-        // TODO
-        return null;
+        return stream.flatMap(e -> Stream.of(new NaturalGasBilling(new Date(e), new Date(e), new Date(e), e, e, e, e, e, e, e, e, e, e))).skip(1);
     }
 
     // Aufgabe 3) g)
@@ -179,8 +183,23 @@ public class StreamingJava {
     // TODO: in a main Method and print the output to the console.
 
     // Aufgabe 3) h)
+
+    /**
+     * method to search "dir" for files staring with "st" and ending with "ed" and sort them by size
+     * @param dir the directory to search in
+     * @param startsWith the start of the file name
+     * @param endsWith the end of the file name
+     * @param maxFiles the maximum number of files to return
+     * @return a stream of files
+     */
     public static Stream<File> findFilesWith(String dir, String startsWith, String endsWith, int maxFiles) {
-        // TODO
+        try {
+            return Stream.of(new File(dir).listFiles()).filter(e -> e.getName().startsWith(startsWith) && e.getName().endsWith(endsWith))
+                    .sorted(Comparator.comparing(File::length).reversed()).limit(maxFiles);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Error while reading directory");
+        }
 
         return null;
     }
