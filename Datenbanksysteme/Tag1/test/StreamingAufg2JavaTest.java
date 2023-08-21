@@ -83,7 +83,7 @@ class StreamingAufg2JavaTest {
 
     @org.junit.jupiter.api.Test
     void makeStreamOf() {
-    String[] s = {"a", "b", "c", "d", "e"};
+    String[] s = {"ab", "b", "c", "d", "e"};
     IntStream result = StreamingJava.makeStreamOf(s);
     IntStream expected = IntStream.of(97, 98, 99, 100, 101);
     assert(result.equals(expected));

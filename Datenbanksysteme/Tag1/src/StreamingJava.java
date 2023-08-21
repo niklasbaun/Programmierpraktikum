@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.Reader;
 import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -65,7 +66,6 @@ public class StreamingJava {
      * @param <E> the type of the stream
      */
     public static <E> Set<E> findOfCount(Stream<E> stream, int count) {
-
         return stream.collect(Collectors.groupingBy(e -> e, Collectors.counting())).entrySet().stream()
                 .filter(e -> e.getValue() == count).map(Map.Entry::getKey).collect(Collectors.toSet());
     }
@@ -115,19 +115,19 @@ public class StreamingJava {
      */
     public static double averageCost(Stream<String> lines) {
         return lines.map(e -> e.split(",")).map(e -> e[12]).mapToDouble(Double::parseDouble)
-                .average().orElse(0.0);
+                .average().orElse(-1.0);
     }
 
     // Aufgabe 3) c)
 
     /**
-     * method to count how often clean energy levy is null or 0
+     * method to count how often clean energy levy is not null or 0
      * @param stream the stream of lines
      * @return the count of times
      */
     public static long countCleanEnergyLevy(Stream<String> stream) {
         return stream.map(e -> e.split(","))
-                .filter(e -> e[10].equals("0.0") || e[10].equals("null") || e[10].equals("")).count();
+                .filter(e -> !e[10].equals("0") || !e[10].equals("")).count();
     }
 
     // Aufgabe 3) d)
@@ -151,8 +151,8 @@ public class StreamingJava {
      * @param stream the stream of lines
      * @return the stream of NaturalGasBilling ordered by invoice date descending
      */
-    private static Stream<NaturalGasBilling> orderByInvoiceDateDesc(Stream<String> stream) {
-        return fileLines("src/NaturalGasBilling.csv").map(e -> e.split(",")).map(e -> new NaturalGasBilling(
+    static Stream<NaturalGasBilling> orderByInvoiceDateDesc(Stream<String> stream) {
+        return stream.map(e -> e.split(",")).map(e -> new NaturalGasBilling(
                 new Date(e[0]), new Date(e[1]), new Date(e[2]), Long.parseLong(e[3]), Double.parseDouble(e[4]),
                 Double.parseDouble(e[5]), Double.parseDouble(e[6]), Double.parseDouble(e[7]),
                 Double.parseDouble(e[8]), Double.parseDouble(e[9]), Double.parseDouble(e[10]),
@@ -164,8 +164,11 @@ public class StreamingJava {
      * @param stream the stream of NaturalGasBilling
      * @return the stream of bytes
      */
-    Stream<Byte> serialize(Stream<NaturalGasBilling> stream){
-        return null;
+    static Stream<Byte> serialize(Stream<NaturalGasBilling> stream){
+        //list of all header values
+        List<String> header = List.of("invoiceDate", "fromDate", "toDate", "billingDay", "billedGJ", "basicCharge", "deliveryCharges",
+                "StorageTransport", "commodityCharges", "Tax", "cleanEnergyLevy", "carbonTax", "Amount");
+        return Stream.concat(header.stream().map(e -> (byte) e.hashCode()), stream.flatMap(NaturalGasBilling::toBytes));
     }
 
     /**
@@ -173,19 +176,14 @@ public class StreamingJava {
      * @param stream the stream of bytes
      * @return the stream of NaturalGasBilling
      */
-    public Stream<NaturalGasBilling> deserialize(Stream<Byte> stream){
-        return stream.flatMap(e -> Stream.of(new NaturalGasBilling(new Date(e), new Date(e), new Date(e), e, e, e, e, e, e, e, e, e, e))).skip(1);
+    public Stream<NaturalGasBilling> deserialize(Stream<Byte> stream) {
+        return null;
     }
-
-    // Aufgabe 3) g)
-    // TODO: Implement static method: "Stream<NaturalGasBilling> deserialize(Stream<Byte> stream)".
-    // TODO: Execute the call: "deserialize(serialize(orderByInvoiceDateDesc(fileLines(Datei aus f))))"
-    // TODO: in a main Method and print the output to the console.
 
     // Aufgabe 3) h)
 
     /**
-     * method to search "dir" for files staring with "st" and ending with "ed" and sort them by size
+     * method to search "dir" and all sub folders for files staring with "st" and ending with "ed" and sort them by size
      * @param dir the directory to search in
      * @param startsWith the start of the file name
      * @param endsWith the end of the file name
@@ -194,8 +192,9 @@ public class StreamingJava {
      */
     public static Stream<File> findFilesWith(String dir, String startsWith, String endsWith, int maxFiles) {
         try {
-            return Stream.of(new File(dir).listFiles()).filter(e -> e.getName().startsWith(startsWith) && e.getName().endsWith(endsWith))
-                    .sorted(Comparator.comparing(File::length).reversed()).limit(maxFiles);
+            Files.walk(Paths.get(dir)).filter(Files::isRegularFile).filter(e -> e.getFileName().toString().startsWith(startsWith))
+                    .filter(e -> e.getFileName().toString().endsWith(endsWith)).sorted(Comparator.comparingLong(e -> e.toFile().length()))
+                    .limit(maxFiles).map(Path::toFile).forEach(System.out::println);
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Error while reading directory");
