@@ -95,38 +95,83 @@ public class StreamingJava {
             //implement reader
             Reader reader = Files.newBufferedReader(new File(path).toPath());
             BufferedReader bufferedReader = new BufferedReader(reader);
-            //read lines except the first one
+            //open stream, when finished close stream and print "success
             return bufferedReader.lines().skip(1);
+
         } catch (Exception e) {
             e.printStackTrace();
+            System.out.println("Error while reading file");
         }
         return null;
     }
 
     // Aufgabe 3) b)
-    public static double averageCost(Stream<String> lines) {
-        // TODO
 
-        return 0d;
+    /**
+     * method to calculate the average cost of the gas billing
+     * cost is found in the 11th column
+     * @param lines the stream of lines
+     * @return the average cost
+     */
+    public static double averageCost(Stream<String> lines) {
+        return lines.map(e -> e.split(",")).map(e -> e[12]).mapToDouble(Double::parseDouble)
+                .average().orElse(0.0);
     }
 
     // Aufgabe 3) c)
-    public static long countCleanEnergyLevy(Stream<String> stream) {
-        // TODO
 
-        return 0L;
+    /**
+     * method to count how often clean energy levy is null or 0
+     * @param stream the stream of lines
+     * @return the count of times
+     */
+    public static long countCleanEnergyLevy(Stream<String> stream) {
+        return stream.map(e -> e.split(","))
+                .filter(e -> e[10].equals("0.0") || e[10].equals("null") || e[10].equals("")).count();
     }
 
     // Aufgabe 3) d)
-    // TODO:
-    //  1. Create record "NaturalGasBilling".
-    //  2. Implement static method: "Stream<NaturalGasBilling> orderByInvoiceDateDesc(Stream<String> stream)".
+    record NaturalGasBilling(Date invoiceDate, Date fromDate, Date toDate, long billingDay,
+                             double billedGJ, double basicCharge, double deliveryCharges,
+                             double StorageTransport, double commodityCharges, double Tax,
+                             double cleanEnergyLevy, double carbonTax, double Amount) {
 
-    // Aufgabe 3) e)
-    // TODO: Implement object method: "Stream<Byte> toBytes()" for record "NaturalGasBilling".
+        /**
+         * method to convert the record to a stream of bytes
+         * @return the stream of bytes
+         */
+        public Stream<Byte> toBytes(){
+            return Stream.of(invoiceDate, fromDate, toDate, billingDay, billedGJ, basicCharge, deliveryCharges,
+                    StorageTransport, commodityCharges, Tax, cleanEnergyLevy, carbonTax, Amount).map(e -> (byte) e.hashCode());
+        }
+    }
 
-    // Aufgabe 3) f)
-    // TODO: Implement static method: "Stream<Byte> serialize(Stream<NaturalGasBilling> stream)".
+    /**
+     * method to order the stream by invoice date descending
+     * @param stream the stream of lines
+     * @return the stream of NaturalGasBilling ordered by invoice date descending
+     */
+    private static Stream<NaturalGasBilling> orderByInvoiceDateDesc(Stream<String> stream) {
+        return fileLines("src/NaturalGasBilling.csv").map(e -> e.split(",")).map(e -> new NaturalGasBilling(
+                new Date(e[0]), new Date(e[1]), new Date(e[2]), Long.parseLong(e[3]), Double.parseDouble(e[4]),
+                Double.parseDouble(e[5]), Double.parseDouble(e[6]), Double.parseDouble(e[7]),
+                Double.parseDouble(e[8]), Double.parseDouble(e[9]), Double.parseDouble(e[10]),
+                Double.parseDouble(e[11]), Double.parseDouble(e[12]))).sorted(Comparator.comparing(NaturalGasBilling::invoiceDate).reversed());
+    }
+
+    /**
+     * method to serialize a stream of NaturalGasBilling
+     * @param stream the stream of NaturalGasBilling
+     * @return the stream of bytes
+     */
+    Stream<Byte> serialize(Stream<NaturalGasBilling> stream){
+        return stream.flatMap(NaturalGasBilling::toBytes);
+    }
+
+    public Stream<NaturalGasBilling> deserialize(Stream<Byte> stream){
+        // TODO
+        return null;
+    }
 
     // Aufgabe 3) g)
     // TODO: Implement static method: "Stream<NaturalGasBilling> deserialize(Stream<Byte> stream)".
