@@ -95,8 +95,8 @@ public class StreamingJava {
             //implement reader
             Reader reader = Files.newBufferedReader(new File(path).toPath());
             BufferedReader bufferedReader = new BufferedReader(reader);
-            //
-            return bufferedReader.lines();
+            //read lines except the first one
+            return bufferedReader.lines().skip(1);
         } catch (Exception e) {
             e.printStackTrace();
         }
