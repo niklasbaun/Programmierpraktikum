@@ -1,0 +1,22 @@
+Notizen für Tag 1 Aufgabe 1
+
+Stream Interface:
+    unterschiedliche Arten für eigentlich jeden primitivan Datentyp(i.E.: long, int, byte)
+    unterteilung in collector; transformator; filter; terminierung
+    ablauf von src über filter zu ende(nicht immer speicher)
+    kann sequentiell oder parallel ablaufen
+
+StreamSupport:
+    hilfsmethoden für stream klassen
+     meist um eine neue isntanz aus einem spliterator zu erstellen
+     geht für Int/ long/ double...
+
+Collectors:
+    methoden zum reduzieren und sammeln der Daten
+    kann sammeln, reduzieren, zusammenfassen, gruppieren, summen berechnen...
+
+Non-Blocking I/O
+    erstellung von interface und klassen für JVM um auf Dateisystem, dateien und alles drum rum zuzugreifen
+    ermöglicht JVM um gang damit, kann exceptions handlen
+    art API für dateisysteme
+
