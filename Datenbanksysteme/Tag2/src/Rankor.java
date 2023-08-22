@@ -86,7 +86,7 @@ public class Rankor {
      * @return the cards used in the combination
      */
     private static List<CardDeck52.Card> isFlush(List<CardDeck52.Card> tableCards, TexasHoldemHand hand){
-        List<CardDeck52.Card> allCards = tableCards;
+        List<CardDeck52.Card> allCards = new ArrayList<>(tableCards);
         allCards.add(hand.card1);
         allCards.add(hand.card2);
         //sort that list
@@ -97,7 +97,7 @@ public class Rankor {
         int countHearts = 0;
         int countDiamonds = 0;
         int countClubs = 0;
-        for (int i = 0; i < allCards.size()-1; i++) {
+        for (int i = 0; i < allCards.size(); i++) {
             if(allCards.get(i).sign == CardDeck52.Card.Sign.Spades){
                 countSpade++;
             }
@@ -116,7 +116,7 @@ public class Rankor {
             //search for the 5 spades with the highest value
             int i = allCards.size()-1;
             int count = 0;
-            List<CardDeck52.Card> flushCards = new CardDeck52();
+            List<CardDeck52.Card> flushCards = new ArrayList<>();
             while (i > 0){
                 //if card is spade add it to the list
                 if(allCards.get(i).sign == CardDeck52.Card.Sign.Spades && count <= 5){
@@ -131,7 +131,7 @@ public class Rankor {
             //search for the 5 hearts with the highest value
             int i = allCards.size()-1;
             int count = 0;
-            List<CardDeck52.Card> flushCards = new CardDeck52();
+            List<CardDeck52.Card> flushCards = new ArrayList<>();
             while (i >=0){
                 //if card is heart add it to the list
                 if(allCards.get(i).sign == CardDeck52.Card.Sign.Hearts && count <= 5){
@@ -146,7 +146,7 @@ public class Rankor {
             //search for the 5 diamonds with the highest value
             int i = allCards.size()-1;
             int count = 0;
-            List<CardDeck52.Card> flushCards = new CardDeck52();
+            List<CardDeck52.Card> flushCards = new ArrayList<>();
             while (i > 0){
                 //if card is diamond add it to the list
                 if(allCards.get(i).sign == CardDeck52.Card.Sign.Diamonds && count <= 5){
@@ -161,7 +161,7 @@ public class Rankor {
             //search for the 5 clubs with the highest value
             int i = allCards.size()-1;
             int count = 0;
-            List<CardDeck52.Card> flushCards = new CardDeck52();
+            List<CardDeck52.Card> flushCards = new ArrayList<>();
             while (i >= 0){
                 //if card is club add it to the list
                 if(allCards.get(i).sign == CardDeck52.Card.Sign.Clubs && count <= 5){
@@ -182,7 +182,7 @@ public class Rankor {
      * @return the rank of the hand as an integer
      */
     private static List<CardDeck52.Card> isStraight(List<CardDeck52.Card> tableCards, TexasHoldemHand hand){
-        List<CardDeck52.Card> allCards = tableCards;
+        List<CardDeck52.Card> allCards = new ArrayList<>(tableCards);
         allCards.add(hand.card1);
         allCards.add(hand.card2);
         //sort that list
@@ -191,7 +191,7 @@ public class Rankor {
         //if any 5 cards have consecutive values
         //start from top to find the highest straight
         int i = allCards.size()-1;
-        int countStraight = 0;
+        int countStraight = 1;
         while (i > 0){
             //if the current card is one higher than the next card
             if(allCards.get(i).value == allCards.get(i-1).value + 1){
@@ -202,10 +202,10 @@ public class Rankor {
                     return allCards.subList(i-1, i+4);
                 }
             }
-            //if the current card is not one higher than the next card
-            else{
+            //if the current card is not one higher than the next card, but also not the same
+            else if(allCards.get(i).value != allCards.get(i-1).value && allCards.get(i).value != allCards.get(i-1).value + 1){
                 //reset the count
-                countStraight = 0;
+                countStraight = 1;
             }
             i--;
         }
@@ -220,7 +220,7 @@ public class Rankor {
      */
     private static List<CardDeck52.Card> isRoyalFlush(List<CardDeck52.Card> straightCards, TexasHoldemHand hand) {
         //combine all Cards
-        List<CardDeck52.Card> allCards = straightCards;
+        List<CardDeck52.Card> allCards = new ArrayList<>(straightCards);
         allCards.add(hand.card1);
         allCards.add(hand.card2);
         //sort that list
@@ -241,13 +241,12 @@ public class Rankor {
      * @return the cards used in the combination
      */
     private static List<CardDeck52.Card> isFourOfAKind(List<CardDeck52.Card> tableCards, TexasHoldemHand hand){
-        List<CardDeck52.Card> allCards = tableCards;
+        List<CardDeck52.Card> allCards = new ArrayList<>(tableCards);
         allCards.add(hand.card1);
         allCards.add(hand.card2);
         //sort that list
         allCards.sort(CardDeck52.Card::compareTo);
         //check for four of a kind
-        //create Map to count the values
         //if any 4 cards have the same value -> four of a kind
         Map<Integer, Integer> valueCount = new HashMap<>();
         for(int i = 0; i < allCards.size(); i++){
@@ -283,7 +282,7 @@ public class Rankor {
      * @return the cards used in the combination
      */
     private static List<CardDeck52.Card> isThreeOfAKind(List<CardDeck52.Card> tableCards, TexasHoldemHand hand){
-        List<CardDeck52.Card> allCards = tableCards;
+        List<CardDeck52.Card> allCards = new ArrayList<>(tableCards);
         allCards.add(hand.card1);
         allCards.add(hand.card2);
         //sort that list
@@ -327,7 +326,7 @@ public class Rankor {
      */
     private static List<CardDeck52.Card> isFullHouse(List<CardDeck52.Card> threeCards, List<CardDeck52.Card> tableCards, TexasHoldemHand hand){
         //combine hand and table cards
-        List<CardDeck52.Card> allCards = tableCards;
+        List<CardDeck52.Card> allCards = new ArrayList<>(tableCards);
         allCards.add(hand.card1);
         allCards.add(hand.card2);
         //sort that list
@@ -378,7 +377,7 @@ public class Rankor {
      */
     private static List<CardDeck52.Card> isOnePair (List<CardDeck52.Card> tableCards, TexasHoldemHand hand){
         //combine hand and table cards
-        List<CardDeck52.Card> allCards = tableCards;
+        List<CardDeck52.Card> allCards = new ArrayList<>(tableCards);
         allCards.add(hand.card1);
         allCards.add(hand.card2);
         //sort that list
@@ -423,7 +422,7 @@ public class Rankor {
      */
     private static List<CardDeck52.Card> isTwoPair (List<CardDeck52.Card> pairCards, List<CardDeck52.Card> tableCards, TexasHoldemHand hand) {
         //combine hand and table cards
-        List<CardDeck52.Card> allCards = tableCards;
+        List<CardDeck52.Card> allCards = new ArrayList<>(tableCards);
         allCards.add(hand.card1);
         allCards.add(hand.card2);
         //sort that list
@@ -474,7 +473,7 @@ public class Rankor {
      */
     private static List<CardDeck52.Card> isHighCard (List<CardDeck52.Card> tableCards, TexasHoldemHand hand){
         //combine hand and table cards
-        List<CardDeck52.Card> allCards = tableCards;
+        List<CardDeck52.Card> allCards = new ArrayList<>(tableCards);
         allCards.add(hand.card1);
         allCards.add(hand.card2);
         //sort that list

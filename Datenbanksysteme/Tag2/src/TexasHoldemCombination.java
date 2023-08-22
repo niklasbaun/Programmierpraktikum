@@ -133,15 +133,7 @@ public final class TexasHoldemCombination implements Comparable<TexasHoldemCombi
         CardDeck52 deck = new CardDeck52();
         //shuffle the deck
         deck.shuffle();
-        //generate streams of all possible combinations
-        return Stream.generate(() -> {
-            //deal the cards
-            TexasHoldemHand hand = new TexasHoldemHand();
-            hand.takeDeal(deck.deal());
-            hand.takeDeal(deck.deal());
-            //return the combination
-            return hand.eval(deck.deal(ThreadLocalRandom.current().nextInt(3, 5 + 1)));
-        });
+        return null;
     }
 
     public static void main(String[] args) {
