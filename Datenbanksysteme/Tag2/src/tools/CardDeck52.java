@@ -1,4 +1,4 @@
-package tag2.tools;
+package tools;
 
 public class CardDeck52 extends BasicDeck<CardDeck52.Card> {
     private static final int CARDS_COUNT            		= 52;

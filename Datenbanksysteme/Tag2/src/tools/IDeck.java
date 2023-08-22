@@ -1,4 +1,4 @@
-package tag2.tools;
+package tools;
 
 public interface IDeck<E> extends IStack<E> {
     void shuffle(

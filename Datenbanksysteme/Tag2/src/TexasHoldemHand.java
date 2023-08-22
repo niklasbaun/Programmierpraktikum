@@ -1,6 +1,4 @@
-package tag2;
-
-import tag2.tools.CardDeck52;
+import tools.CardDeck52;
 
 import java.util.List;
 

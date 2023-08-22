@@ -1,6 +1,4 @@
-package tag2;
-
-import tag2.tools.CardDeck52;
+import tools.CardDeck52;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -27,20 +25,61 @@ public final class TexasHoldemCombination implements Comparable<TexasHoldemCombi
     List<CardDeck52.Card> combinationCards;
 
     // a)
+    //constructor
     TexasHoldemCombination(List<CardDeck52.Card> tableCards, TexasHoldemHand hand) {
-        // TODO
-
+        int rank = Rankor.determineRank(tableCards, hand);
+        if(rank == 1){
+            CombinationType combinationType = CombinationType.HighCard;
+        }
+        if (rank == 2){
+            CombinationType combinationType = CombinationType.OnePair;
+        }
+        if (rank == 3){
+            CombinationType combinationType = CombinationType.TwoPair;
+        }
+        if (rank == 4){
+            CombinationType combinationType = CombinationType.ThreeOfAKind;
+        }
+        if (rank == 5){
+            CombinationType combinationType = CombinationType.Straight;
+        }
+        if (rank == 6){
+            CombinationType combinationType = CombinationType.Flush;
+        }
+        if (rank == 7){
+            CombinationType combinationType = CombinationType.FullHouse;
+        }
+        if (rank == 8){
+            CombinationType combinationType = CombinationType.FourOfAKind;
+        }
+        if (rank == 9){
+            CombinationType combinationType = CombinationType.StraightFlush;
+        }
+        if (rank == 10){
+            CombinationType combinationType = CombinationType.RoyalFlush;
+        }
     }
 
     // b)
+
+    /**
+     * method to compare the combination of two hands
+     * @param that the other hand
+     * @return 0 if equal, 1 if this is better, -1 if that is better
+     */
     @Override
     public final int compareTo(TexasHoldemCombination that) {
-        // TODO
+
 
         return 0;
     }
 
     // c)
+
+    /**
+     * method to generate an endless stream of all possible combinations
+     * @return the stream
+     */
     public static Stream<TexasHoldemCombination> generate() {
         // TODO
 
