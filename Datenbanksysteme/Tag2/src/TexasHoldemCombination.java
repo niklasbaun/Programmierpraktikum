@@ -20,44 +20,49 @@ public final class TexasHoldemCombination implements Comparable<TexasHoldemCombi
         StraightFlush,
         RoyalFlush
     }
-
+    //what combination is it
     CombinationType combinationType;
+    //what cards are used in the combination
     List<CardDeck52.Card> combinationCards;
+    List<CardDeck52.Card> handCards;
 
     // a)
     //constructor
     TexasHoldemCombination(List<CardDeck52.Card> tableCards, TexasHoldemHand hand) {
         int rank = Rankor.determineRank(tableCards, hand);
         if(rank == 1){
-            CombinationType combinationType = CombinationType.HighCard;
+            this.combinationType = CombinationType.HighCard;
         }
         if (rank == 2){
-            CombinationType combinationType = CombinationType.OnePair;
+            this.combinationType = CombinationType.OnePair;
         }
         if (rank == 3){
-            CombinationType combinationType = CombinationType.TwoPair;
+            this.combinationType = CombinationType.TwoPair;
         }
         if (rank == 4){
-            CombinationType combinationType = CombinationType.ThreeOfAKind;
+            this.combinationType = CombinationType.ThreeOfAKind;
         }
         if (rank == 5){
-            CombinationType combinationType = CombinationType.Straight;
+            this.combinationType = CombinationType.Straight;
         }
         if (rank == 6){
-            CombinationType combinationType = CombinationType.Flush;
+            this.combinationType = CombinationType.Flush;
         }
         if (rank == 7){
-            CombinationType combinationType = CombinationType.FullHouse;
+            this.combinationType = CombinationType.FullHouse;
         }
         if (rank == 8){
-            CombinationType combinationType = CombinationType.FourOfAKind;
+            this.combinationType = CombinationType.FourOfAKind;
         }
         if (rank == 9){
-            CombinationType combinationType = CombinationType.StraightFlush;
+            this.combinationType = CombinationType.StraightFlush;
         }
         if (rank == 10){
-            CombinationType combinationType = CombinationType.RoyalFlush;
+            this.combinationType = CombinationType.RoyalFlush;
         }
+        //get the cards used in the combination
+        this.combinationCards = Rankor.getCombinationCards(tableCards, hand);
+        this.handCards = Arrays.asList(hand.get());
     }
 
     // b)
@@ -69,8 +74,36 @@ public final class TexasHoldemCombination implements Comparable<TexasHoldemCombi
      */
     @Override
     public final int compareTo(TexasHoldemCombination that) {
+        //determine the rank of my hand
+        CombinationType myRank = this.combinationType;
+        //determine the rank of the other hand
+        CombinationType otherRank = that.combinationType;
+        //compare the ranks
+        if(myRank.compareTo(otherRank) > 0){
+            return 1;
+        }
+        if(myRank.compareTo(otherRank) < 0){
+            return -1;
+        }
+        //if the ranks are equal, compare the highest cards in the combination
+        //for this combine the cards of the combination with hand cards and sort them
+        List<CardDeck52.Card> myCards = this.combinationCards;
+        myCards.addAll(this.handCards);
+        Collections.sort(myCards);
 
+        List<CardDeck52.Card> otherCards = that.combinationCards;
+        otherCards.addAll(that.handCards);
+        Collections.sort(otherCards);
 
+        //compare the highest cards if they are the same compare the second highest cards and so on
+        for (int i = myCards.size() - 1; i >= 0; i--) {
+            if(myCards.get(i).compareTo(otherCards.get(i)) > 0){
+                return 1;
+            }
+            if(myCards.get(i).compareTo(otherCards.get(i)) < 0){
+                return -1;
+            }
+        }
         return 0;
     }
 
