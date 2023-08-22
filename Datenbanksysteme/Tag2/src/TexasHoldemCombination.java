@@ -29,39 +29,54 @@ public final class TexasHoldemCombination implements Comparable<TexasHoldemCombi
     // a)
     //constructor
     TexasHoldemCombination(List<CardDeck52.Card> tableCards, TexasHoldemHand hand) {
-        int rank = Rankor.determineRank(tableCards, hand);
-        if(rank == 1){
+        Response resData = Rankor.determineRank(tableCards, hand);
+        if(resData.getRank() == 1){
             this.combinationType = CombinationType.HighCard;
+            this.combinationCards = resData.getCombinationCards();
         }
-        if (rank == 2){
+        if (resData.getRank() == 2){
             this.combinationType = CombinationType.OnePair;
+            this.combinationCards = resData.getCombinationCards();
         }
-        if (rank == 3){
+        if (resData.getRank() == 3){
             this.combinationType = CombinationType.TwoPair;
+            this.combinationCards = resData.getCombinationCards();
         }
-        if (rank == 4){
+        if (resData.getRank() == 4){
             this.combinationType = CombinationType.ThreeOfAKind;
+            this.combinationCards = resData.getCombinationCards();
         }
-        if (rank == 5){
+        if (resData.getRank() == 5){
             this.combinationType = CombinationType.Straight;
+            this.combinationCards = resData.getCombinationCards();
         }
-        if (rank == 6){
+        if (resData.getRank() == 6){
             this.combinationType = CombinationType.Flush;
+            this.combinationCards = resData.getCombinationCards();
         }
-        if (rank == 7){
+        if (resData.getRank() == 7){
             this.combinationType = CombinationType.FullHouse;
+            this.combinationCards = resData.getCombinationCards();
         }
-        if (rank == 8){
+        if (resData.getRank() == 8){
             this.combinationType = CombinationType.FourOfAKind;
+            this.combinationCards = resData.getCombinationCards();
         }
-        if (rank == 9){
+        if (resData.getRank() == 9){
             this.combinationType = CombinationType.StraightFlush;
+            this.combinationCards = resData.getCombinationCards();
         }
-        if (rank == 10){
+        if (resData.getRank() == 10){
             this.combinationType = CombinationType.RoyalFlush;
+            this.combinationCards = resData.getCombinationCards();
         }
-        //get the cards used in the combination
-        this.combinationCards = Rankor.getCombinationCards(tableCards, hand);
+        //for error
+        if (resData.getRank() == 0){
+            this.combinationType = CombinationType.HighCard;
+            this.combinationCards = resData.getCombinationCards();
+            throw new IllegalArgumentException("Error in the combination, nothing found");
+        }
+        //set the hand cards
         this.handCards = Arrays.asList(hand.get());
     }
 
@@ -114,9 +129,19 @@ public final class TexasHoldemCombination implements Comparable<TexasHoldemCombi
      * @return the stream
      */
     public static Stream<TexasHoldemCombination> generate() {
-        // TODO
-
-        return null;
+        //create a new deck
+        CardDeck52 deck = new CardDeck52();
+        //shuffle the deck
+        deck.shuffle();
+        //generate streams of all possible combinations
+        return Stream.generate(() -> {
+            //deal the cards
+            TexasHoldemHand hand = new TexasHoldemHand();
+            hand.takeDeal(deck.deal());
+            hand.takeDeal(deck.deal());
+            //return the combination
+            return hand.eval(deck.deal(ThreadLocalRandom.current().nextInt(3, 5 + 1)));
+        });
     }
 
     public static void main(String[] args) {

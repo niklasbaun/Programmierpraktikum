@@ -11,4 +11,13 @@ public class Response {
         this.rank = rank;
         this.combinationCards = combinationCards;
     }
+
+    //Getter
+    public int getRank(){
+        return this.rank;
+    }
+
+    public List<CardDeck52.Card> getCombinationCards(){
+        return this.combinationCards;
+    }
 }
