@@ -23,16 +23,18 @@ public class GeneticAlgorithm implements Problem, EvolutionaryOperator, FitnessE
 
     //survivor selection
     private SurvivalOperator survivorOperator;
+    private SelectionOperator selectionOperator;
 
     private int terminationCondition;
 
     //constructor
-    private GeneticAlgorithm (Problem problem, int populationSize, List<EvolutionaryOperator> evolutionaryOperators, FitnessEvaluator fitnessEval, SurvivalOperator survivorOperator, int terminationCondition) {
+    private GeneticAlgorithm (Problem problem, int populationSize, List<EvolutionaryOperator> evolutionaryOperators, FitnessEvaluator fitnessEval, SurvivalOperator survivorOperator, SelectionOperator selectionOperator, int terminationCondition) {
         this.problem = problem;
         this.populationSize = populationSize;
         this.evolutionaryOperators = evolutionaryOperators;
         this.fitnessEval = fitnessEval;
         this.survivorOperator = survivorOperator;
+        this.selectionOperator = selectionOperator;
         this.terminationCondition = terminationCondition;
     }
 
@@ -51,6 +53,9 @@ public class GeneticAlgorithm implements Problem, EvolutionaryOperator, FitnessE
     }
     public void setSurvivorOperator(SurvivalOperator survivorOperator) {
         this.survivorOperator = survivorOperator;
+    }
+    public void setSelectionOperator(SelectionOperator selectionOperator) {
+        this.selectionOperator = selectionOperator;
     }
     public void setTerminationCondition(int terminationCondition) {
         this.terminationCondition = terminationCondition;
@@ -71,6 +76,9 @@ public class GeneticAlgorithm implements Problem, EvolutionaryOperator, FitnessE
     }
     public SurvivalOperator getSurvivorOperator() {
         return survivorOperator;
+    }
+    public SelectionOperator getSelectionOperator() {
+        return selectionOperator;
     }
     public int getTerminationCondition() {
         return terminationCondition;
@@ -103,14 +111,11 @@ public class GeneticAlgorithm implements Problem, EvolutionaryOperator, FitnessE
         //while termination condition not met
         while (terminationCondition != 0) {
             //apply evolutionary operators (offsprings) to best solutions
-            for (Solution solution : solutions) {
                 //use evolutionary operators to evolve the solutions
                 List<Solution> offspring = new ArrayList<>();
-                //TODO throws exception
                 for (EvolutionaryOperator evolutionaryOperator : evolutionaryOperators) {
                     try {
-                        evolutionaryOperator.evolve(solution);
-                        offspring.add(solution);
+                        offspring.add(evolutionaryOperator.evolve(selectParent(solutions)));
                     } catch (EvolutionException e) {
                         e.printStackTrace();
                     }
@@ -120,7 +125,6 @@ public class GeneticAlgorithm implements Problem, EvolutionaryOperator, FitnessE
                 fitnessEval.evaluate(offspring);
                 //add the offspring to the solutions
                 solutions.addAll(offspring);
-            }
 
 
             //select survivors
@@ -164,7 +168,13 @@ public class GeneticAlgorithm implements Problem, EvolutionaryOperator, FitnessE
             return null;
         }
 
-        @Override
+    /**
+     * method to evolve a solution
+     * @param solution the solution to evolve
+     * @return the evolved solution
+     * @throws EvolutionException
+     */
+    @Override
         public Solution evolve(Solution solution) throws EvolutionException {
             //evolve the solution
             //return the evolved solution
@@ -189,17 +199,7 @@ public class GeneticAlgorithm implements Problem, EvolutionaryOperator, FitnessE
             fitnessEval.evaluate(population);
         }
 
-        /**
-         * method to select a parent from a list of candidates
-         * @param candidates the candidates to select from
-         * @return the selected parent
-         */
-        @Override
-        public Solution selectParent(List<Solution> candidates) {
-            //select a parent from the candidates
 
-            return null;
-        }
 
         /**
          * method to select a population from a list of candidates
