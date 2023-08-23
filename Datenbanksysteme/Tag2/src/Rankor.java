@@ -329,14 +329,15 @@ public class Rankor {
         List<CardDeck52.Card> allCards = new ArrayList<>(tableCards);
         allCards.add(hand.card1);
         allCards.add(hand.card2);
-        //sort that list
-        allCards.sort(CardDeck52.Card::compareTo);
         //remove the three of a kind from the list
         for (int i = 0; i < allCards.size()-1; i++) {
             if(allCards.get(i).value == threeCards.get(0).value){
                 allCards.remove(i);
             }
         }
+        //sort that list
+        allCards.sort(CardDeck52.Card::compareTo);
+
         //check if in the remaining cards is a pair
         //create Map to count the values
         //if any 2 cards have the same value -> pair

@@ -1,6 +1,6 @@
-package ga.framework.operators;
+package src.ga.framework.operators;
 
-import ga.framework.model.Solution;
+import src.ga.framework.model.Solution;
 
 import java.util.List;
 

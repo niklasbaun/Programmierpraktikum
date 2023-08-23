@@ -1,4 +1,4 @@
-package ga.framework.operators;
+package src.ga.framework.operators;
 
 @SuppressWarnings("serial")
 public class EvolutionException extends Exception {

@@ -92,8 +92,8 @@ class RankorTest {
 
         //check this hand for pair
         TexasHoldemHand hand8 = new TexasHoldemHand();
-        hand8.takeDeal(new CardDeck52.Card(9, CardDeck52.Card.Sign.Clubs));
-        hand8.takeDeal(new CardDeck52.Card(5, CardDeck52.Card.Sign.Spades));
+        hand8.takeDeal(new CardDeck52.Card(2, CardDeck52.Card.Sign.Clubs));
+        hand8.takeDeal(new CardDeck52.Card(13, CardDeck52.Card.Sign.Spades));
 
         //check this hand as full house
         TexasHoldemHand hand9 = new TexasHoldemHand();

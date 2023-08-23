@@ -1,4 +1,4 @@
-package ga.framework.model;
+package src.ga.framework.model;
 
 @SuppressWarnings("serial")
 public class NoSolutionException extends Exception {

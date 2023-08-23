@@ -1,4 +1,4 @@
-package ga.framework.model;
+package src.ga.framework.model;
 
 public abstract class Solution {
 	

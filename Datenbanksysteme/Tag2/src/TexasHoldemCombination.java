@@ -1,9 +1,6 @@
 import tools.CardDeck52;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Stream;
 
@@ -110,7 +107,7 @@ public final class TexasHoldemCombination implements Comparable<TexasHoldemCombi
         otherCards.addAll(that.handCards);
         Collections.sort(otherCards);
 
-        //compare the highest cards if they are the same compare the second highest cards and so on
+        //compare the highest cards if they are the same compare the second-highest cards and so on
         for (int i = myCards.size() - 1; i >= 0; i--) {
             if(myCards.get(i).compareTo(otherCards.get(i)) > 0){
                 return 1;
@@ -129,12 +126,32 @@ public final class TexasHoldemCombination implements Comparable<TexasHoldemCombi
      * @return the stream
      */
     public static Stream<TexasHoldemCombination> generate() {
-        //create a new deck
-        CardDeck52 deck = new CardDeck52();
-        //shuffle the deck
-        deck.shuffle();
-        return null;
+         return Stream.generate(TexasHoldemCombination::randomEval).limit(10);
     }
+
+    /**
+     * helper method to generate a random combination
+     * @return the combination type
+     */
+    public static TexasHoldemCombination randomEval(){
+        CardDeck52 deck = new CardDeck52();
+        deck.shuffle();
+        TexasHoldemHand hand = new TexasHoldemHand();
+        hand.takeDeal(deck.deal());
+        hand.takeDeal(deck.deal());
+        List<CardDeck52.Card> table= new ArrayList<>();
+        Random random = new Random();
+        int max = 5;
+        int min = 0;
+        int i = random.nextInt(max - min + 1) + min;
+        while(i<=5) {
+            table.add(deck.deal());
+            i++;
+        }
+        return hand.eval(table);
+    }
+
+
 
     public static void main(String[] args) {
         CardDeck52 deck = new CardDeck52();
@@ -160,5 +177,7 @@ public final class TexasHoldemCombination implements Comparable<TexasHoldemCombi
         System.out.println("Table Cards (" + tableCards.size() + "): " + tableCards);
         System.out.println("Hand: " + Arrays.toString(hand.get()));
         System.out.println("Combination (" + combination.combinationCards.size() + "): " + combination.combinationType + " -> " + combination.combinationCards);
+        //test generate
+        generate();
     }
 }
