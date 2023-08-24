@@ -1,3 +1,5 @@
+package src.ga.problems;
+
 import src.ga.framework.model.Problem;
 import src.ga.framework.model.Solution;
 

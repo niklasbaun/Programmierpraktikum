@@ -1,3 +1,5 @@
+package src.ga.framework;
+
 import src.ga.framework.model.NoSolutionException;
 import src.ga.framework.model.Problem;
 import src.ga.framework.model.Solution;
@@ -28,7 +30,7 @@ public class GeneticAlgorithm {
     private int terminationCondition;
 
     //constructor
-    private GeneticAlgorithm (Problem problem, int populationSize, List<EvolutionaryOperator> evolutionaryOperators, FitnessEvaluator fitnessEval, SurvivalOperator survivorOperator, SelectionOperator selectionOperator, int terminationCondition) {
+    private GeneticAlgorithm(Problem problem, int populationSize, List<EvolutionaryOperator> evolutionaryOperators, FitnessEvaluator fitnessEval, SurvivalOperator survivorOperator, SelectionOperator selectionOperator, int terminationCondition) {
         this.problem = problem;
         this.populationSize = populationSize;
         this.evolutionaryOperators = evolutionaryOperators;
@@ -92,84 +94,84 @@ public class GeneticAlgorithm {
     public int getTerminationCondition() {
         return terminationCondition;
     }
-
-    /**
-     * method runOptimization() to start the optimization process of the genetic algorithm
-     * @param problem the problem to be solved
-     * @param populationSize the size of the population
-     * @param evolutionaryOperators the list of evolutionary operators
-     * @param fitnessEval the fitness evaluator
-     * @param survivorOperator the survivor selection operator
-     * @param terminationCondition the termination condition
-     * @return the best solution found
-     */
-    public Solution runOptimization(Problem problem, int populationSize, List<EvolutionaryOperator> evolutionaryOperators, FitnessEvaluator fitnessEval, SurvivalOperator survivorOperator, int terminationCondition) throws EvolutionException, SurvivalException, NoSolutionException {
-        //create number of solutions = population size
-        //list to save the solutions
-        List<Solution> solutions = new ArrayList<>(populationSize);
-        for (int i = 0; i < populationSize; i++) {
-            try {
-                Solution solution = problem.createNewSolution();
-                solutions.add(solution);
-            } catch (NoSolutionException e) {
-                e.printStackTrace();
-            }
-        }
-
-
-        //evaluate fitness
-        fitnessEval.evaluate(solutions);
-        //while termination condition isn't met
-        while (terminationCondition != 0) {
-            //apply evolutionary operators (offsprings) to the best solutions
-                //use evolutionary operators to evolve the solutions
-                List<Solution> offspring = new ArrayList<>();
-                //do as many times as the population size
-                for (int i = 0; i < populationSize; i++) {
-
-                    //choose random evolutionary operator
-                    Random r = new Random();
-                    int max = evolutionaryOperators.size();
-                    int j = r.nextInt(max);
-                    EvolutionaryOperator evolutionaryOperator = evolutionaryOperators.get(j);
-                    try {
-                        TournamentSelection select = new TournamentSelection();
-                        offspring.add(evolutionaryOperator.evolve(select.selectParent(solutions)));
-                    } catch (EvolutionException e) {
-                        e.printStackTrace();
-                    }
-                }
-                //evaluate fitness
-                fitnessEval.evaluate(offspring);
-                //add the offspring to the solutions
-                solutions.addAll(offspring);
-
-            //select survivors
-            try {
-               //use TopKSurvival to select the best solutions
-                solutions = survivorOperator.selectPopulation(solutions, populationSize);
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            terminationCondition--;
-        }
-        //return the best solution
-        //evaluate fitness
-        fitnessEval.evaluate(solutions);
-        //sort the solutions select with best fitness
-        for (int i = 0; i < solutions.size(); i++) {
-            for (int j = 0; j < solutions.size(); j++) {
-                if (solutions.get(i).getFitness() > solutions.get(j).getFitness()) {
-                    Solution temp = solutions.get(i);
-                    solutions.set(i, solutions.get(j));
-                    solutions.set(j, temp);
-                }
-            }
-        }
-        //return the best solution using selectPopulation
-        return solutions.get(0);
-    }
+//
+//    /**
+//     * method runOptimization() to start the optimization process of the genetic algorithm
+//     * @param problem the problem to be solved
+//     * @param populationSize the size of the population
+//     * @param evolutionaryOperators the list of evolutionary operators
+//     * @param fitnessEval the fitness evaluator
+//     * @param survivorOperator the survivor selection operator
+//     * @param terminationCondition the termination condition
+//     * @return the best solution found
+//     */
+//    public Solution runOptimization(Problem problem, int populationSize, List<EvolutionaryOperator> evolutionaryOperators, FitnessEvaluator fitnessEval, SurvivalOperator survivorOperator, int terminationCondition) throws EvolutionException, SurvivalException, NoSolutionException {
+//        //create number of solutions = population size
+//        //list to save the solutions
+//        List<Solution> solutions = new ArrayList<>(populationSize);
+//        for (int i = 0; i < populationSize; i++) {
+//            try {
+//                Solution solution = problem.createNewSolution();
+//                solutions.add(solution);
+//            } catch (NoSolutionException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//
+//
+//        //evaluate fitness
+//        fitnessEval.evaluate(solutions);
+//        //while termination condition isn't met
+//        while (terminationCondition != 0) {
+//            //apply evolutionary operators (offsprings) to the best solutions
+//                //use evolutionary operators to evolve the solutions
+//                List<Solution> offspring = new ArrayList<>();
+//                //do as many times as the population size
+//                for (int i = 0; i < populationSize; i++) {
+//
+//                    //choose random evolutionary operator
+//                    Random r = new Random();
+//                    int max = evolutionaryOperators.size();
+//                    int j = r.nextInt(max);
+//                    EvolutionaryOperator evolutionaryOperator = evolutionaryOperators.get(j);
+//                    try {
+//                        TournamentSelection select = new TournamentSelection();
+//                        offspring.add(evolutionaryOperator.evolve(select.selectParent(solutions)));
+//                    } catch (EvolutionException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//                //evaluate fitness
+//                fitnessEval.evaluate(offspring);
+//                //add the offspring to the solutions
+//                solutions.addAll(offspring);
+//
+//            //select survivors
+//            try {
+//               //use TopKSurvival to select the best solutions
+//                solutions = survivorOperator.selectPopulation(solutions, populationSize);
+//
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//            terminationCondition--;
+//        }
+//        //return the best solution
+//        //evaluate fitness
+//        fitnessEval.evaluate(solutions);
+//        //sort the solutions select with best fitness
+//        for (int i = 0; i < solutions.size(); i++) {
+//            for (int j = 0; j < solutions.size(); j++) {
+//                if (solutions.get(i).getFitness() > solutions.get(j).getFitness()) {
+//                    Solution temp = solutions.get(i);
+//                    solutions.set(i, solutions.get(j));
+//                    solutions.set(j, temp);
+//                }
+//            }
+//        }
+//        //return the best solution using selectPopulation
+//        return solutions.get(0);
+//    }
 
     //---------------------------------------------------------------------------
 
@@ -177,18 +179,18 @@ public class GeneticAlgorithm {
      * method to start the fluent interface chain
      * @return list of possible solutions
      */
-    public Solve solve(Problem problem){
+    public Solve solve(Problem prob){
         //method to start the chain
         //return list of possible solutions
-        problem = problem;
+        problem = prob;
         return new Solve();
     }
 
     class Solve {
         //method to set the population size
         //return list of possible solutions
-        WithPopSizeOf withPopSizeOf(int populationSize){
-            populationSize = populationSize;
+        WithPopSizeOf withPopSizeOf(int popSize){
+            populationSize = popSize;
             return new WithPopSizeOf();
         }
 
@@ -217,8 +219,8 @@ public class GeneticAlgorithm {
 
     class EvaluatingSolutionsBy {
 
-        StoppingAtEvolution stoppingAtEvolution(int terminationCondition){
-            terminationCondition = terminationCondition;
+        StoppingAtEvolution stoppingAtEvolution(int terminationCond){
+            terminationCondition = terminationCond;
             return new StoppingAtEvolution();
         }
 
@@ -226,25 +228,7 @@ public class GeneticAlgorithm {
 
     class StoppingAtEvolution {
 
-        RunOptimazation runOptimazation(){
-            //method to start the optimization process
-            return new RunOptimazation();
-        }
-    }
-
-    class RunOptimazation {
-        //method to start the optimization process
-        /**
-         * method runOptimization() to start the optimization process of the genetic algorithm
-         * @param problem the problem to be solved
-         * @param populationSize the size of the population
-         * @param evolutionaryOperators the list of evolutionary operators
-         * @param fitnessEval the fitness evaluator
-         * @param survivorOperator the survivor selection operator
-         * @param terminationCondition the termination condition
-         * @return the best solution found
-         */
-        public Solution runOptimization(Problem problem, int populationSize, List<EvolutionaryOperator> evolutionaryOperators, FitnessEvaluator fitnessEval, SurvivalOperator survivorOperator, int terminationCondition) throws EvolutionException, SurvivalException, NoSolutionException {
+        Solution runOptimization(){
             //create number of solutions = population size
             //list to save the solutions
             List<Solution> solutions = new ArrayList<>(populationSize);
@@ -298,7 +282,7 @@ public class GeneticAlgorithm {
             //return the best solution
             //evaluate fitness
             fitnessEval.evaluate(solutions);
-            //sort the solutions select with best fitness
+            //sort the solutions select with the best fitness
             for (int i = 0; i < solutions.size(); i++) {
                 for (int j = 0; j < solutions.size(); j++) {
                     if (solutions.get(i).getFitness() > solutions.get(j).getFitness()) {
@@ -313,4 +297,3 @@ public class GeneticAlgorithm {
         }
     }
 }
-

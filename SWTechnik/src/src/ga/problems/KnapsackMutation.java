@@ -1,3 +1,5 @@
+package src.ga.problems;
+
 import src.ga.framework.model.Solution;
 import src.ga.framework.operators.EvolutionException;
 import src.ga.framework.operators.EvolutionaryOperator;

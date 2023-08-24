@@ -1,3 +1,5 @@
+package src.ga.framework;
+
 import src.ga.framework.model.Solution;
 import src.ga.framework.operators.SurvivalException;
 import src.ga.framework.operators.SurvivalOperator;

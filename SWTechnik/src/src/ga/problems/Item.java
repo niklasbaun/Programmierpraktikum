@@ -1,14 +1,21 @@
-public class Item {
+package src.ga.problems;
 
+public class Item {
+    // Attributes
+    String desc;
     int weight;
     int value;
     // Constructor
-    private Item(int weight, int value) {
+    private Item(String desc, int weight, int value) {
+        this.desc = desc;
         this.weight = weight;
         this.value = value;
     }
 
     //getter and Setter
+    public String getDesc() {
+        return desc;
+    }
     public int getWeight() {
         return weight;
     }
@@ -16,6 +23,9 @@ public class Item {
         return value;
     }
 
+    public String setDesc(String desc) {
+        return this.desc = desc;
+    }
     public int setWeight(int weight) {
         return this.weight = weight;
     }
@@ -29,8 +39,8 @@ public class Item {
      * @param value the value of the item
      * @return the item
      */
-    public static Item createItem(int weight, int value) {
-        return new Item(weight, value);
+    public static Item createItem(String desc, int weight, int value) {
+        return new Item(desc, weight, value);
     }
 
 }
