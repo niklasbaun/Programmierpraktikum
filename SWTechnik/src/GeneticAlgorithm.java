@@ -177,7 +177,7 @@ public class GeneticAlgorithm {
      * method to start the fluent interface chain
      * @return list of possible solutions
      */
-    public Solve solve() {
+    public Solve solve(Problem problem){
         //method to start the chain
         //return list of possible solutions
         problem = problem;
