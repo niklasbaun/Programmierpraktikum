@@ -62,6 +62,7 @@ public class KnapsackMutation implements EvolutionaryOperator {
         public Solution evolve(Solution solution) throws EvolutionException {
             //create copy of a solution
             KnapsackSolution newSolution = new KnapsackSolution(solution);
+            newSolution.content = ((KnapsackSolution) solution).content;
             //extract problem
             KnapsackProblem problem = newSolution.getKnapsackProblem();
             //create random Generator

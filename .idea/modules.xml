@@ -8,6 +8,7 @@
       <module fileurl="file://$PROJECT_DIR$/SWTechnik/SWTechnik.iml" filepath="$PROJECT_DIR$/SWTechnik/SWTechnik.iml" />
       <module fileurl="file://$PROJECT_DIR$/Datenbanksysteme/Tag1/Tag1.iml" filepath="$PROJECT_DIR$/Datenbanksysteme/Tag1/Tag1.iml" />
       <module fileurl="file://$PROJECT_DIR$/Datenbanksysteme/Tag2/Tag2.iml" filepath="$PROJECT_DIR$/Datenbanksysteme/Tag2/Tag2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/verteilteSysteme/verteilteSysteme.iml" filepath="$PROJECT_DIR$/verteilteSysteme/verteilteSysteme.iml" />
     </modules>
   </component>
 </project>

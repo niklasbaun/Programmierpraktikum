@@ -40,7 +40,7 @@ public class GeneticAlgorithm {
     public GeneticAlgorithm() {
         this.problem = null;
         this.populationSize = 0;
-        this.evolutionaryOperators = null;
+        this.evolutionaryOperators = new ArrayList<>();
         this.fitnessEval = null;
         this.survivorOperator = null;
         this.selectionOperator = null;
