@@ -22,6 +22,9 @@ public class KnapsackProblem implements Problem {
     public void setWeightLimit(int weightLimit) {
         this.weightLimit = weightLimit;
     }
+    public void setItemList(List<Item> itemList) {
+        this.itemList = itemList;
+    }
 
     public int getWeightLimit(){
         return this.weightLimit;

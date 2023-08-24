@@ -63,20 +63,22 @@ public class KnapsackMutation implements EvolutionaryOperator {
             //create copy of a solution
             KnapsackSolution newSolution = new KnapsackSolution(solution);
             newSolution.content = ((KnapsackSolution) solution).content;
+            //copy items from p
+            KnapsackProblem p = newSolution.getKnapsackProblem();
+            p.setItemList(((KnapsackProblem) solution.getProblem()).getItemList());
             //extract problem
-            KnapsackProblem problem = newSolution.getKnapsackProblem();
             //create random Generator
             Random random = new Random();
             //check if a solution has items
             if (newSolution.content.isEmpty()) {
                 //only add random item
-                int randomInt = random.nextInt(problem.getItemList().size());
-                newSolution.content.add(problem.getItemFromPos(randomInt));
+                int randomInt = random.nextInt(p.getItemList().size());
+                newSolution.content.add(p.getItemFromPos(randomInt));
             } else if (newSolution.content.size() > 1) {
                 //check if item should be added or removed
                 if (random.nextBoolean()) {
                     //add random item
-                    int randomInt = random.nextInt(problem.getItemList().size());
+                    int randomInt = random.nextInt(p.getItemList().size());
                     newSolution = new addMutation(newSolution, randomInt).addItem();
                 } else {
                     //remove random item
