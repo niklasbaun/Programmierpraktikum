@@ -1,8 +1,6 @@
 package src.ga.framework;
 
-import src.ga.framework.model.NoSolutionException;
-import src.ga.framework.model.Problem;
-import src.ga.framework.model.Solution;
+import src.ga.framework.model.*;
 import src.ga.framework.operators.*;
 
 import java.util.ArrayList;
@@ -186,49 +184,49 @@ public class GeneticAlgorithm {
         return new Solve();
     }
 
-    class Solve {
+    public class Solve {
         //method to set the population size
         //return list of possible solutions
-        WithPopSizeOf withPopSizeOf(int popSize){
+        public WithPopSizeOf withPopSizeOf(int popSize){
             populationSize = popSize;
             return new WithPopSizeOf();
         }
 
     }
 
-    class WithPopSizeOf {
+    public class WithPopSizeOf {
         //method to add an evolutionary operator
-        WithPopSizeOf withEvolutionaryOP(EvolutionaryOperator evoOP){
+        public WithPopSizeOf withEvolutionaryOP(EvolutionaryOperator evoOP){
             evolutionaryOperators.add(evoOP);
             return new WithPopSizeOf();
         }
 
         //method to finish the loop
-        WithEvolutionaryOP withEvolutionaryOP2(EvolutionaryOperator evoOP){
+        public WithEvolutionaryOP withEvolutionaryOP2(EvolutionaryOperator evoOP){
             evolutionaryOperators.add(evoOP);
             return new WithEvolutionaryOP();
         }
     }
 
-    class WithEvolutionaryOP {
-        EvaluatingSolutionsBy evaluatingSolutionsBy(FitnessEvaluator fitnessEvaluator){
+    public class WithEvolutionaryOP {
+        public EvaluatingSolutionsBy evaluatingSolutionsBy(FitnessEvaluator fitnessEvaluator){
             fitnessEval = fitnessEvaluator;
             return new EvaluatingSolutionsBy();
         }
     }
 
-    class EvaluatingSolutionsBy {
+    public class EvaluatingSolutionsBy {
 
-        StoppingAtEvolution stoppingAtEvolution(int terminationCond){
+        public StoppingAtEvolution stoppingAtEvolution(int terminationCond){
             terminationCondition = terminationCond;
             return new StoppingAtEvolution();
         }
 
     }
 
-    class StoppingAtEvolution {
+    public class StoppingAtEvolution {
 
-        Solution runOptimization(){
+        public Solution runOptimization(){
             //create number of solutions = population size
             //list to save the solutions
             List<Solution> solutions = new ArrayList<>(populationSize);
