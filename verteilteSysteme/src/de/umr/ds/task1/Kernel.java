@@ -40,10 +40,28 @@ public class Kernel {
 	 * @return The convolved image
 	 */
 	public int[][] convolve(int[][] img) {
-
-		// TODO Task 1d)
-		
-		return null;
+		//difference in Size between input and output image
+		int a = k.length -1;
+		int b = k[0].length -1;
+		//create result array
+		int[][] result = new int[img.length - a][img[0].length - b];
+		//iterate over image
+		//move the kernel over the image one step at a time
+		for(int x = 0; x < result.length; x++){
+			for(int y = 0; y < result[0].length; y++){
+				//calculate the value for the current pixel
+				double value = 0;
+				for(int i = 0; i < k.length; i++){
+					for(int j = 0; j < k[0].length; j++){
+						//x; y for image and i; j for kernel
+						value += (img[x + a - i][y + b - j] * k[i][j]);
+					}
+				}
+				//set the value for the current pixel
+				result[x][y] = (int) Math.round(value);
+			}
+		}
+		return result;
 	}
 
 	public int getHeight() {

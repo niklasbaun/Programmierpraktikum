@@ -81,5 +81,24 @@ public class Kernels {
 		return new Kernel(m);
 	}
 
-	// TODO  Task 1f)
+
+	//myKernels
+	public static Kernel unsharpMasking() {
+		double[][] m = {
+			  {1, 4, 6, 4, 1},
+			  {4, 16, 24, 16, 4},
+			  {6, 24, 36, 24, 6},
+			  {4, 16, 24, 16, 4},
+			  {1, 4, 6, 4, 1}
+		};
+		m = multiplyElementwise(m, -1. / 256);
+		return new Kernel(m);
+	}
+
+	public static Kernel whatEver(){
+		double[][] m = {{-10, 3, 15},
+						{42, 69, 13},
+						{1, 2, 420}};
+		return new Kernel(m);
+	}
 }
