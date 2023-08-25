@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 public class TextClient {
 
-	public static <BufferedReader> void main(String[] args) throws IOException, ClassNotFoundException {
+	public static void main(String[] args) throws IOException, ClassNotFoundException {
         //setup socket
         String server = "dsgw.mathematik.uni-marburg.de";
         int port = 32823;
@@ -29,12 +29,16 @@ public class TextClient {
 
         //send inputs to server
         OutputStream os = socket.getOutputStream();
-        BufferedOutputStream bos = new BufferedOutputStream(os);
+        PrintWriter writer = new PrintWriter(os);
+
+        InputStream is = socket.getInputStream();
+        InputStreamReader bis = new InputStreamReader(is);
+        BufferedReader reader = new BufferedReader(bis);
         while (true) {
 			//write message
             String message = input.nextLine();
-            bos.write(message.getBytes());
-            bos.flush();
+            writer.println(message);
+            writer.flush();
 			if (message.equals("close")) {
 				//close connection
 				System.out.println("Closing connection");
@@ -42,11 +46,10 @@ public class TextClient {
                 break;
 			}
             //receive response from server
-            InputStream is = socket.getInputStream();
-            BufferedInputStream bis = new BufferedInputStream(is);
+
             String response;
             try {
-                response = String.valueOf(bis.read());
+                response = reader.readLine();
                 System.out.println("Server: " + response);
             } catch (EOFException e) {
                 System.out.println("Server closed connection");

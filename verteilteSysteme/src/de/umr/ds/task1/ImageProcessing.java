@@ -115,13 +115,7 @@ public class ImageProcessing {
 
         //resize the convolved image to the original size
         BufferedImage resizedImage = resize(img, convolvedImage);
-        System.out.println("Old Size");
-        System.out.println(img.getWidth());
-        System.out.println(img.getHeight());
-        System.out.println("New Size");
-        System.out.println(resizedImage.getWidth());
-        System.out.println(resizedImage.getHeight());
-        return convolvedImage;
+        return resizedImage;
     }
 
 
@@ -139,6 +133,7 @@ public class ImageProcessing {
         BufferedImage resized = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         //set the Color
         resized.getGraphics().setColor(Color.red);
+        resized.getGraphics().fillRect(0, 0, width, height);
         resized.getGraphics().drawImage(convolved, 0, 0, null);
 
         return resized;
