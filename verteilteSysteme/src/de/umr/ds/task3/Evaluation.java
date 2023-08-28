@@ -9,10 +9,17 @@ public class Evaluation {
 	 * @return accuracy
 	 */
 	public static double accuracy(Perceptron model, Dataset dataset) {
-		
-		// TODO Task 3d)
-		
-		return 0;
+		//check if dataset is empty
+		if(dataset.size() == 0){
+			throw new IllegalArgumentException("Dataset is empty");
+		}
+		//compute accuracy
+		int correct = 0;
+		for(DataPoint dataPoint : dataset){
+			if(model.predict(dataPoint) == dataPoint.getLabel()){
+				correct++;
+			}
+		}
+		return (double) correct / dataset.size();
 	}
-
 }

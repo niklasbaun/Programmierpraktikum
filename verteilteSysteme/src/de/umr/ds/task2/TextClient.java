@@ -9,15 +9,15 @@ public class TextClient {
 
 	public static void main(String[] args) throws IOException, ClassNotFoundException {
         //setup socket
-        String server = "dsgw.mathematik.uni-marburg.de";
+        String server = "localhost";
         int port = 32823;
         //create Socket
         Socket socket = null;
         try {
             socket = new Socket(server, port);
-			System.out.println("Connected to server " + socket.getInetAddress() + " on port " + socket.getPort());
+			System.err.println("Connected to server " + socket.getInetAddress() + " on port " + socket.getPort());
         } catch (IOException e) {
-            System.out.println("Server not found");
+            System.err.println("Server not found");
             System.exit(0);
         }
 		//print server info
@@ -52,7 +52,7 @@ public class TextClient {
                 response = reader.readLine();
                 System.out.println("Server: " + response);
             } catch (EOFException e) {
-                System.out.println("Server closed connection");
+                System.err.println("Server closed connection");
                 break;
             }
         }

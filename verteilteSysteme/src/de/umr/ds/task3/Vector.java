@@ -40,10 +40,17 @@ public class Vector {
 	 * @return The dot product between the two vectors
 	 */
 	public double dot(Vector v) {
+		//check if vectors have the same dimension
+		if(v.numDims() != this.numDims()){
+			throw new IllegalArgumentException("Vectors must have the same dimension");
+		}
+		//compute dot product
+		double result = 0;
+		for(int i = 0; i < v.numDims(); i++){
+			result += v.getDim(i) * this.getDim(i);
+		}
 
-		// TODO Task 3a)
-
-		return 0;
+		return result;
 	}
 
 	/**
@@ -53,10 +60,16 @@ public class Vector {
 	 * @return A new vector
 	 */
 	public Vector add(Vector v) {
-
-		// TODO Task 3a)
-
-		return null;
+		//check if vectors have the same dimension
+		if(v.numDims() != this.numDims()){
+			throw new IllegalArgumentException("Vectors must have the same dimension");
+		}
+		//add vectors
+		double[] result = new double[v.numDims()];
+		for(int i = 0; i < v.numDims(); i++){
+			result[i] = v.getDim(i) + this.getDim(i);
+		}
+		return new Vector(result);
 	}
 
 	/**
@@ -66,10 +79,11 @@ public class Vector {
 	 * @return A new vector
 	 */
 	public Vector mult(double s) {
-
-		// TODO Task 3a)
-
-		return null;
+		//multiply vector with scalar
+		double[] result = new double[this.numDims()];
+		for(int i = 0; i < this.numDims(); i++){
+			result[i] = this.getDim(i) * s;
+		}
+		return new Vector(result);
 	}
-
 }

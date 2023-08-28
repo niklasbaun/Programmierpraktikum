@@ -1,12 +1,21 @@
 package de.umr.ds.task3;
 
+import java.util.Random;
+
 /**
  * A Perceptron holds weights and bias and can be applied to a data vector to
  * predict its class. Weights and bias are initialized randomly.
  */
 public class Perceptron {
+    Vector weight;
+    double bias;
 
-	// TODO Task 3b)
+	//Constructor
+    public Perceptron() {
+        Random r = new Random();
+        this.weight = new Vector(r.nextDouble(), r.nextDouble());
+        this.bias = r.nextDouble();
+    }
 
 
     /**
@@ -16,9 +25,10 @@ public class Perceptron {
      * @return 0 or 1
      */
     public int predict(Vector x) {
-
-        // TODO Task 3b)
-
+        //if x * weight + bias is greater than 0 return 1 else return 0
+        if(x.dot(this.weight) + this.bias > 0){
+            return 1;
+        }
         return 0;
     }
 }
