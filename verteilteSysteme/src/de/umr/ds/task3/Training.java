@@ -40,7 +40,7 @@ public class Training {
 			//iterate over dataset
 			for(DataPoint dataPoint : dataset){
 				//find prediction and actual
-				wanted = dataset.get(dataPoint.getLabel()).getLabel();
+				wanted = dataPoint.getLabel();
 				prediction = perceptron.predict(dataPoint);
 				//if prediction is 1 and actual is 0
 				//set shift in weight
@@ -61,7 +61,7 @@ public class Training {
 				}
 			}
 			//visualize the perceptron
-			vis.update(perceptron.weight, perceptron.bias, epochs);
+			vis.update(perceptron.weight, perceptron.bias, i);
 			//print accuracy
 			System.out.println("Accuracy: " + eval.accuracy(perceptron, dataset));
 			//shuffle dataset
@@ -69,6 +69,8 @@ public class Training {
 		}
 		//print best accuracy
 		System.out.println("Best Accuracy: " + bestAccuracy);
+		//visulize the best
+		vis.update(bestPerceptron.weight, bestPerceptron.bias, epochs);
 	}
 
 	public static void main(String[] args) {
