@@ -4,6 +4,7 @@ package de.umr.ds.task2;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class EchoServer {
@@ -22,7 +23,8 @@ public class EchoServer {
 			System.exit(-1);
 		}
 		//setup thread pool
-		Executors.newFixedThreadPool(1);
+		ExecutorService executorService = Executors.newFixedThreadPool(10);
+
 
 		//accept connections
 		while (true) {
@@ -30,7 +32,8 @@ public class EchoServer {
 				Socket clientSocket = serverSocket.accept();
 				System.err.println("Accepted connection from client " + clientSocket.getInetAddress() + " on port " + clientSocket.getPort());
 				//create new thread for each client
-				new Thread(new EchoServerThread(clientSocket)).start();
+				executorService.execute(new EchoServerThread(clientSocket));
+				//new Thread(new EchoServerThread(clientSocket)).start();
 			} catch (IOException e) {
 				System.err.println("Failed to accept connection");
 				System.exit(-1);

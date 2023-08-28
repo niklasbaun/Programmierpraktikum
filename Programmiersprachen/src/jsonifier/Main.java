@@ -20,5 +20,7 @@ public class Main {
 	    ArrayList<Token> tokenlist = translator.tokenizeProgram(data);
 
 	    System.out.println(tokenlist);
+
+
 	}
 }
