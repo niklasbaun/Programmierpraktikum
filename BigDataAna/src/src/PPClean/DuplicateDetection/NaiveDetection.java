@@ -33,7 +33,15 @@ public class NaiveDetection implements DuplicateDetection {
         Set<Duplicate> duplicates = new HashSet<>();
         int numComparisons = 0;
         // BEGIN SOLUTION
-
+        //compare every record with every other and increment numComparisons if duplicate found
+        for(int i = 0; i < records.size(); i++){
+            for(int j = i+1; j < records.size(); j++){
+                if(recSim.compare(records.get(i), records.get(j)) >= threshold){
+                    duplicates.add(new Duplicate(records.get(i), records.get(j)));
+                    numComparisons++;
+                }
+            }
+        }
 
 
         // END SOLUTION

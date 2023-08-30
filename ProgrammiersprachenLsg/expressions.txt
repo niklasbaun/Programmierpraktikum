@@ -1,0 +1,11 @@
+var degree = 1
+Fleepowder:
+if degree < 31
+then
+draw quad #000000ff #f0daaaaa 2 degree 20 40 40 0
+var degree = degree + 20
+jmp Fleepowder
+fi
+
+
+
