@@ -35,23 +35,30 @@ public class Hybrid implements RecordSimilarity {
     @Override
     public double compare(Record r1, Record r2) {
         double res = 0;
+        int counter = 0;
         // BEGIN SOLUTION
 
+        //check if r1 and r2 have the same length -> throw exception if not
+        if (r1.getContent().size() != r2.getContent().size()) {
+            throw new IllegalArgumentException("Records have different length");
+        }
         //compare the two records attribute by attribute
         for(int i = 0; i < r1.getContent().size(); i++){
             //if policy is null skip attribute
             if(policies.get(i % policies.size()) == null){
                 continue;
-            } else if (policies.get(i % policies.size()) == "L"){
+            } else if (policies.get(i % policies.size()).equals("L")){
                 //compare with levenshtein
                 res += levenshtein.compare(r1.getContent().get(i), r2.getContent().get(i));
-            } else if (policies.get(i % policies.size()) == "J"){
+                counter++;
+            } else if (policies.get(i % policies.size()).equals( "J")){
                 //compare with jaccard
                 res += jaccard.compare(r1.getContent().get(i), r2.getContent().get(i));
+                counter++;
             }
         }
         //res is the average of all comparisons
-        res = res/policies.size();
+        res = res/counter;
 
         // END SOLUTION
         return res;

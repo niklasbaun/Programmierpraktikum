@@ -124,7 +124,8 @@ public class Table {
     public void sortByKey() {
         // BEGIN SOLUTION
 
-
+        //sort data by key
+        this.data.sort(Comparator.comparing(Record::getKey));
 
         // END SOLUTION
     }

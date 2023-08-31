@@ -34,7 +34,24 @@ public class Record {
         StringBuilder key = new StringBuilder();
         // BEGIN SOLUTION
 
+        //check if key components and content have the same length -> throw exception if not
+        if(keyComponents.length != content.size()){
+            throw new IllegalArgumentException("keyComponents and content have different length");
+        }
+        //generate key
+        for(int i = 0; i < keyComponents.length; i++){
+            //remove space
+            content.set(i, content.get(i).replaceAll("\\s", ""));
 
+            //check if keyComponents[i] is in range -> throw exception if not
+            if(keyComponents[i] < 0 ){
+                throw new IllegalArgumentException("keyComponents out of range");
+            } else if (keyComponents[i] > content.get(i).length()){
+                keyComponents[i] = content.get(i).length();
+            }
+            //add key component to key
+            key.append(content.get(i).substring(0, keyComponents[i]));
+        }
 
         // END SOLUTION
         this.key = key.toString();

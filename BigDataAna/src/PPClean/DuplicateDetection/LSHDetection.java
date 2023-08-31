@@ -54,6 +54,38 @@ public class LSHDetection implements DuplicateDetection {
     private void calculateTokens(Table table) {
         // BEGIN SOLUTION
 
+        //create tokenUniverse
+        tokenUniverse = new ArrayList<>();
+        //fill tokenUniverse
+        for(int i = 0; i < table.getData().size(); i++){
+            //get record
+            Record record = table.getData().get(i);
+            String recordString  = record.toString();
+            //iterate over recordString
+            for (int j = 0; j < recordString.length(); j++){
+                //check if token is in tokenUniverse
+                if(!tokenUniverse.contains(recordString.substring(j, j + tokenSize))){
+                    //add token to tokenUniverse
+                    tokenUniverse.add(recordString.substring(j, j + tokenSize));
+                }
+            }
+        }
+        //create tokenMatrix
+        tokenMatrix = new boolean[tokenUniverse.size()][table.getData().size()];
+        //fill tokenMatrix
+        for (int i = 0; i < tokenUniverse.size(); i++){
+            for (int j = 0; j < table.getData().size(); j++){
+                //get record
+                Record record = table.getData().get(j);
+                String recordString  = record.toString();
+                //check if token is in record
+                if(recordString.contains(tokenUniverse.get(i))){
+                    //set tokenMatrix[i][j] to true
+                    tokenMatrix[i][j] = true;
+                }
+            }
+        }
+
 
 
         // END SOLUTION

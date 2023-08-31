@@ -44,8 +44,27 @@ public class SortedNeighborhoodDetection implements DuplicateDetection {
         int numComparisons = 0;
         // BEGIN SOLUTION
 
+        //generate keys
+        table.generateKeys(keyComponents);
+        //sort table by key
+        table.sortByKey();
 
-
+        //iterate over table
+       for(int i = 0; i < table.getData().size() - windowSize; i++){
+           //iterate through a window
+           for(int j = i; j < i + windowSize; j++){
+               for(int k = j + 1; k < i + windowSize; k++){
+                   //compare records
+                   double sim = recSim.compare(table.getData().get(j), table.getData().get(k));
+                   numComparisons++;
+                   //check if similarity is above a threshold
+                   if(sim >= threshold){
+                       //add duplicate
+                       duplicates.add(new Duplicate(table.getData().get(j), table.getData().get(k)));
+                   }
+               }
+           }
+       }
         // END SOLUTION
         System.out.printf("Sorted Neighborhood Detection found %d duplicates after %d comparisons%n", duplicates.size(), numComparisons);
         return duplicates;

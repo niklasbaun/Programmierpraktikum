@@ -41,9 +41,9 @@ public class NaiveDetection implements DuplicateDetection {
                 if(recSim.compare(records.get(i), records.get(j)) >= threshold){
                     //add duplicate to set (set compares and checks if duplicate already exists)
                     duplicates.add(new Duplicate(records.get(i), records.get(j)));
-                    //increment numComparisons
-                    numComparisons++;
                 }
+                //increment numComparisons
+                numComparisons++;
             }
         }
 

@@ -60,7 +60,7 @@ public class Levenshtein implements StringSimilarity {
         }
 
         //calc levenshtein similiarity
-         res = 1 -(double) matrix[m][n]/max(m,n);
+         res = 1 - (double) matrix[m][n]/max(m,n);
 
         // END SOLUTION
         return res;

@@ -28,6 +28,14 @@ public class SingleAttributeEquality implements RecordSimilarity {
         double res = 0;
         // BEGIN SOLUTION
 
+        //check if r1 and r2 have the same length -> throw exception if not
+        if(r1.getContent().size() != r2.getContent().size()){
+            throw new IllegalArgumentException("Records have different length");
+        }
+        //check if attributeIndex is in range -> throw exception if not
+        if(attributeIndex < 0 || attributeIndex >= r1.getContent().size()){
+            throw new IllegalArgumentException("attributeIndex out of range");
+        }
         //compare the two attributes at the given index if at same index returns 1
         if(r1.getContent().get(attributeIndex).equals(r2.getContent().get(attributeIndex))){
             res = 1;
