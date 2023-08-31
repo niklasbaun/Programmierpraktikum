@@ -1,7 +1,7 @@
 package PPClean.Data;
 
 /**
- * Data structure to represent two {@link src.PPClean.Data.Record} instances that form a duplicate
+ * Data structure to represent two {@link PPClean.Data.Record} instances that form a duplicate
  */
 public class Duplicate {
     private Record record1;

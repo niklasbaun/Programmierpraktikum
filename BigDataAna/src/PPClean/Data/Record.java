@@ -2,7 +2,8 @@ package PPClean.Data;
 
 import java.util.List;
 
-import static src.PPClean.Configuration.DATA_SEPARATOR;
+import static PPClean.Configuration.DATA_SEPARATOR;
+import static PPClean.Configuration.DATA_SEPARATOR;
 
 /**
  * Data structure to represent a table row

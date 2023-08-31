@@ -27,10 +27,12 @@ public class SingleAttributeEquality implements RecordSimilarity {
     public double compare(Record r1, Record r2) {
         double res = 0;
         // BEGIN SOLUTION
-        //compare the two attributes at the given index if at same index return 1
+
+        //compare the two attributes at the given index if at same index returns 1
         if(r1.getContent().get(attributeIndex).equals(r2.getContent().get(attributeIndex))){
             res = 1;
         }
+
         // END SOLUTION
         return res;
     }

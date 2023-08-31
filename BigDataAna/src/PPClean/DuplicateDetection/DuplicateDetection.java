@@ -2,7 +2,7 @@ package PPClean.DuplicateDetection;
 
 import PPClean.Data.Duplicate;
 import PPClean.Data.Table;
-import src.PPClean.Similarity.RecordSimilarity;
+import PPClean.Similarity.RecordSimilarity;
 
 import java.util.Set;
 

@@ -1,6 +1,6 @@
 package PPClean.Data;
 
-import src.PPClean.Helper;
+import PPClean.Helper;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -11,8 +11,8 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
-import static src.PPClean.Configuration.CONTROL_CHAR;
-import static src.PPClean.Configuration.DATA_SEPARATOR;
+import static PPClean.Configuration.CONTROL_CHAR;
+import static PPClean.Configuration.DATA_SEPARATOR;
 
 
 /**

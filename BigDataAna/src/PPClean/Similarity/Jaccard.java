@@ -30,7 +30,26 @@ public class Jaccard implements StringSimilarity {
         Set<String> ngramsY = new HashSet<>();
         // BEGIN SOLUTION
 
+        //create ngrams for x and y
+        for (int i = 0; i < x.length() - n + 1; i++) {
+            ngramsX.add(x.substring(i, i + n));
+        }
+        for(int i = 0; i < y.length() - n + 1; i++){
+            ngramsY.add(y.substring(i, i + n));
+        }
 
+        //calc intersection
+        Set<String> intersection = new HashSet<>(ngramsX);
+        //method from Set to find intersection (only keeps elements that are in both sets)
+        intersection.retainAll(ngramsY);
+
+        //calc union
+        Set<String> union = new HashSet<>(ngramsX);
+        //addAll, will only add Strings not prevously contained, because of Set proporties
+        union.addAll(ngramsY);
+
+        //calc jaccard similarity
+        res = (double) intersection.size()/union.size();
 
         // END SOLUTION
         return res;

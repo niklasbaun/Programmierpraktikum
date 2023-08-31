@@ -3,7 +3,7 @@ package PPClean.DuplicateDetection;
 import PPClean.Data.Duplicate;
 import PPClean.Data.Record;
 import PPClean.Data.Table;
-import src.PPClean.Similarity.RecordSimilarity;
+import PPClean.Similarity.RecordSimilarity;
 
 import java.util.HashSet;
 import java.util.List;
@@ -24,6 +24,7 @@ public class NaiveDetection implements DuplicateDetection {
     }
 
     /**
+     * Compares every record with every other and returns a set of detected duplicates
      * @param table Table to check for duplicates
      * @param recSim Similarity measure to use for comparing two records
      * @return Set of detected duplicates
@@ -33,20 +34,18 @@ public class NaiveDetection implements DuplicateDetection {
         Set<Duplicate> duplicates = new HashSet<>();
         int numComparisons = 0;
         // BEGIN SOLUTION
+
         //compare every record with every other and increment numComparisons if duplicate found
         for(int i = 0; i < records.size(); i++){
             for(int j = i+1; j < records.size(); j++){
                 if(recSim.compare(records.get(i), records.get(j)) >= threshold){
+                    //add duplicate to set (set compares and checks if duplicate already exists)
                     duplicates.add(new Duplicate(records.get(i), records.get(j)));
+                    //increment numComparisons
                     numComparisons++;
-                    //check if duplicate is already in set else add it
-                    if(duplicates.contains(new Duplicate(records.get(j), records.get(i)))){
-                        duplicates.add(new Duplicate(records.get(j), records.get(i)));
-                    }
                 }
             }
         }
-
 
         // END SOLUTION
         System.out.printf("Naive Detection found %d duplicates after %d comparisons%n", duplicates.size(), numComparisons);

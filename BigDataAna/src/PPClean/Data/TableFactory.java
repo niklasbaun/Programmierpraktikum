@@ -1,14 +1,14 @@
 package PPClean.Data;
 
-import static src.PPClean.Configuration.DATA_SEPARATOR;
-import static src.PPClean.Configuration.PATH_INPUT_DATA;
+import static PPClean.Configuration.DATA_SEPARATOR;
+import static PPClean.Configuration.PATH_INPUT_DATA;
 
 /**
  * Factory to produce instances of Table
  */
 public class TableFactory {
     /**
-     * @return Table for default input path and default data separator (see {@link src.PPClean.Configuration})
+     * @return Table for default input path and default data separator (see {@link PPClean.Configuration})
      */
     public static Table getDefaultInputTable() {
         return Table.createFromFile(PATH_INPUT_DATA, DATA_SEPARATOR);
