@@ -62,7 +62,7 @@ public class LSHDetection implements DuplicateDetection {
             Record record = table.getData().get(i);
             String recordString  = record.toString();
             //iterate over recordString
-            for (int j = 0; j < recordString.length(); j++){
+            for (int j = 0; j < recordString.length() - tokenSize; j++){
                 //check if token is in tokenUniverse
                 if(!tokenUniverse.contains(recordString.substring(j, j + tokenSize))){
                     //add token to tokenUniverse
@@ -77,6 +77,7 @@ public class LSHDetection implements DuplicateDetection {
             for (int j = 0; j < table.getData().size(); j++){
                 //get record
                 Record record = table.getData().get(j);
+                //make string from record
                 String recordString  = record.toString();
                 //check if token is in record
                 if(recordString.contains(tokenUniverse.get(i))){
@@ -85,8 +86,6 @@ public class LSHDetection implements DuplicateDetection {
                 }
             }
         }
-
-
 
         // END SOLUTION
     }
@@ -101,8 +100,35 @@ public class LSHDetection implements DuplicateDetection {
     private void calculateMinHashes(Table table) {
         // BEGIN SOLUTION
 
+        //control boolean
+        boolean control = false;
 
-
+        //create signatureMatrix
+        signatureMatrix = new int[numMinHashs][table.getData().size()];
+        //fill signatureMatrix
+        for(int i = 0; i < numMinHashs; i++){
+            //go over tabel
+            for(int j = 0; j < table.getData().size(); j++){
+                control = true;
+                //iterate over tokenMatrix
+                for(int k = 0; k < tokenMatrix.length; k++){
+                    //check if tokenMatrix[k][j] is true
+                    if(tokenMatrix[k][j]){
+                        //set signatureMatrix[i][j] to k
+                        signatureMatrix[i][j] = k;
+                        control = false;
+                        break;
+                    }
+                }
+                //check if control is true
+                if(control){
+                    //set entry to -1
+                    signatureMatrix[i][j] = -1;
+                }
+            }
+        }
+        //shuffle tokenMatrix
+        Helper.shuffleMatrixRows(tokenMatrix);
         // END SOLUTION
     }
 
@@ -121,6 +147,42 @@ public class LSHDetection implements DuplicateDetection {
      */
     private void calculateHashBuckets() {
         // BEGIN SOLUTION
+
+        //create LSH
+        LSH = new ArrayList<>();
+
+        //set band length
+        int bandLength = numMinHashs/ numBands;
+
+        //generate new bands
+        for (int i = 0; i < numMinHashs -bandLength; i++){
+            //create bucket
+            Hashtable<Integer, List<Integer>> bucket = new Hashtable<>();
+            //iterate over each record
+            for(int j = 0; j < signatureMatrix[0].length; j++){
+                //create band
+                int[] band = new int[bandLength];
+                for(int k = 0; k < bandLength; k++){
+                    band[k] = signatureMatrix[i + k][j];
+                }
+                //Integerlist with all record ids in one bucket
+                List<Integer> recordIds = new ArrayList<>();
+                //check if bucket contains content
+                if(bucket.containsKey(hash(band))){
+                    //get recordIds
+                    recordIds = bucket.get(hash(band));
+                }else {
+                    //add recordId to recordIds
+                    recordIds.add(j);
+                }
+                //add recordIds to bucket
+                bucket.put(hash(band), recordIds);
+            }
+            //add bucket to LSH
+            LSH.add(bucket);
+            //jump to the next band
+            i = i + bandLength - 1;
+        }
 
 
 
@@ -144,7 +206,26 @@ public class LSHDetection implements DuplicateDetection {
         calculateHashBuckets();
         // BEGIN SOLUTION
 
-
+        //iterate over LSH
+        for (int i = 0; i< LSH.size(); i++){
+            //iterate over each bucket
+            for (int key : LSH.get(i).keySet()){
+                //iterate over each record in the bucket
+                for (int j = 0; j < LSH.get(i).get(key).size(); j++){
+                    //iterate over each record in the bucket for comparison
+                    for (int k = j + 1; k < LSH.get(i).get(key).size(); k++){
+                        //compare records
+                        double sim = recSim.compare(table.getData().get(LSH.get(i).get(key).get(j)), table.getData().get(LSH.get(i).get(key).get(k)));
+                        numComparisons++;
+                        //check if similarity is above a threshold
+                        if(sim >= threshold){
+                            //add duplicate
+                            duplicates.add(new Duplicate(table.getData().get(LSH.get(i).get(key).get(j)), table.getData().get(LSH.get(i).get(key).get(k))));
+                        }
+                    }
+                }
+            }
+        }
 
         // END SOLUTION
         System.out.printf("LSH Detection found %d duplicates after %d comparisons%n", duplicates.size(), numComparisons);
