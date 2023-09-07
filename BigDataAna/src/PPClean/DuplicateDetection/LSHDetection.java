@@ -181,7 +181,7 @@ public class LSHDetection implements DuplicateDetection {
             //add bucket to LSH
             LSH.add(bucket);
             //jump to the next band
-            i = i + bandLength - 1;
+            i = i + bandLength;
         }
 
 
@@ -208,19 +208,25 @@ public class LSHDetection implements DuplicateDetection {
 
         //iterate over LSH
         for (int i = 0; i< LSH.size(); i++){
-            //iterate over each bucket
-            for (int key : LSH.get(i).keySet()){
-                //iterate over each record in the bucket
-                for (int j = 0; j < LSH.get(i).get(key).size(); j++){
-                    //iterate over each record in the bucket for comparison
-                    for (int k = j + 1; k < LSH.get(i).get(key).size(); k++){
-                        //compare records
-                        double sim = recSim.compare(table.getData().get(LSH.get(i).get(key).get(j)), table.getData().get(LSH.get(i).get(key).get(k)));
-                        numComparisons++;
-                        //check if similarity is above a threshold
-                        if(sim >= threshold){
-                            //add duplicate
-                            duplicates.add(new Duplicate(table.getData().get(LSH.get(i).get(key).get(j)), table.getData().get(LSH.get(i).get(key).get(k))));
+            //in each bucket check for duplicates
+            //if bucket only contains one record -> no duplicates
+            if(LSH.get(i).size() > 1){
+                //in each bucket check for duplicates
+                for (int key : LSH.get(i).keySet()){
+                    //get recordIds
+                    List<Integer> recordIds = LSH.get(i).get(key);
+                    //iterate over recordIds
+                    for(int j = 0; j < recordIds.size(); j++){
+                        //iterate over recordIds
+                        for(int k = j + 1; k < recordIds.size(); k++){
+                            //compare records
+                            double sim = recSim.compare(table.getData().get(recordIds.get(j)), table.getData().get(recordIds.get(k)));
+                            numComparisons++;
+                            //check if similarity is above a threshold
+                            if(sim >= threshold){
+                                //add duplicate
+                                duplicates.add(new Duplicate(table.getData().get(recordIds.get(j)), table.getData().get(recordIds.get(k))));
+                            }
                         }
                     }
                 }

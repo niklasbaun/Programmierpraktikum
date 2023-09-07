@@ -12,4 +12,9 @@
       <module name="Programmiersprachen" target="1.7" />
     </bytecodeTargetLevel>
   </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="Grafik" options="--add-exports jdk.jdeps/com.sun.tools.classfile=ALL-UNNAMED" />
+    </option>
+  </component>
 </project>
