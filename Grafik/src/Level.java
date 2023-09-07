@@ -18,6 +18,9 @@ public class Level {
     float offsetX;
     public int tileSize = 70;
     ArrayList<Tile> tiles = new ArrayList<>();
+    ArrayList<Item> coins = new ArrayList<>();
+    ArrayList<Enemy> slimes = new ArrayList<>();
+    ArrayList<Enemy> finishFlag = new ArrayList<>();
 
     public Level(String levelMapPath) {
         try {
@@ -32,6 +35,9 @@ public class Level {
                 // Tile images
                 Tile.images.add(ImageIO.read(new File("D:\\Marburg\\Sem02\\Programmierpraktikum\\Code\\Grafik\\assets\\Tiles\\grassMid.png")));
                 Tile.images.add(ImageIO.read(new File("D:\\Marburg\\Sem02\\Programmierpraktikum\\Code\\Grafik\\assets\\Tiles\\liquidWaterTop.png")));
+
+                // Item images
+
             } catch (IOException e) {
                 e.printStackTrace();
             }

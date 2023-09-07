@@ -9,6 +9,9 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 
 public class Player {
+
+    int coins = 0;
+    int lifes = 3;
     boolean isCollisionTop, isCollisionBottom, isCollisionLeft, isCollisionRight, collides = false;
     boolean facingLeft = false;
     float jumpingPower = 35.f;
@@ -87,36 +90,6 @@ public class Player {
         }
     }
 
-    public BufferedImage getPlayerImage() {
-        BufferedImage b = getNextImage();
-        if (facingLeft) {
-            AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
-            tx.translate(-b.getWidth(null), 0);
-            AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
-            b = op.filter(b, null);
-        }
-        return b;
-    }
-
-    private BufferedImage getNextImage() {
-        //check if the player is moving
-        if(!walkingLeft && !walkingRight){
-            //player is not moving
-            displayedAnimationState = 0;
-            return tilesWalk.get(displayedAnimationState);
-        } else {
-            moveCounter++;
-            if (moveCounter >= 3) {
-                displayedAnimationState++;
-                moveCounter = 0;
-            }
-            if (displayedAnimationState > numberAnimationStates - 1) {
-                displayedAnimationState = 0;
-            }
-            return tilesWalk.get(displayedAnimationState);
-        }
-    }
-
     /**
      * gravity and wind resistance on player
      * if player is not on ground -> fall
@@ -191,6 +164,56 @@ public class Player {
 
         boundingBox.max.x = pos.x + tilesWalk.get(0).getWidth();
         boundingBox.max.y = pos.y + tilesWalk.get(0).getHeight();
+    }
+    /**
+     * collect coin
+     *
+     */
+    public void collectCoin() {
+        //check if player overlaps with any coin
+        for (int i = 0; i < l.coins.size(); i++){
+            if(l.coins.get(i).boundingBox.intersect(this.boundingBox)){
+                l.coins.get(i).collected = true;
+                l.coins.remove(i);
+                coins++;
+                playSound("D:\\Marburg\\Sem02\\Programmierpraktikum\\Code\\Grafik\\assets\\Sound\\coin.wav");
+            }
+        }
+    }
+
+
+    /**
+     * get the current image of the player
+     */
+
+    public BufferedImage getPlayerImage() {
+        BufferedImage b = getNextImage();
+        if (facingLeft) {
+            AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
+            tx.translate(-b.getWidth(null), 0);
+            AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+            b = op.filter(b, null);
+        }
+        return b;
+    }
+
+    private BufferedImage getNextImage() {
+        //check if the player is moving
+        if(!walkingLeft && !walkingRight){
+            //player is not moving
+            displayedAnimationState = 0;
+            return tilesWalk.get(displayedAnimationState);
+        } else {
+            moveCounter++;
+            if (moveCounter >= 3) {
+                displayedAnimationState++;
+                moveCounter = 0;
+            }
+            if (displayedAnimationState > numberAnimationStates - 1) {
+                displayedAnimationState = 0;
+            }
+            return tilesWalk.get(displayedAnimationState);
+        }
     }
 
     public void playSound(String path){
